@@ -19,8 +19,7 @@ class UserModel(AbstractBaseUser):
     last_name = models.CharField(max_length=150, verbose_name='Фамилия')
     email = models.EmailField(verbose_name='Почта', unique=True,
                               error_messages={'unique': 'Данная почта привязана к другому аккаунту.', })
-    phone = models.CharField(verbose_name='Телефон', blank=True,
-                             error_messages={'unique': 'Данный номер привязан к другому аккаунту.', }, max_length=16)
+    phone = models.CharField(verbose_name='Телефон', blank=True, max_length=16)
     date_joined = models.DateTimeField(default=timezone.now, verbose_name='Дата регистрации')
     is_admin = models.BooleanField(default=False, verbose_name='Админ',
                                    help_text='Установите в True, если хотите сделать пользователя админом')

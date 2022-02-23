@@ -14,7 +14,7 @@ from rest_framework.response import Response
 
 from .models import UserModel, CityModel
 from .serializers import LoginSerializer, UserCurrentSerializer, UsersListSerializer, PrivateUsersListSerializer, \
-    PrivateUsersRUDSerializer
+    PrivateUsersRUDSerializer, CitySerializer
 
 PAGE_SIZE = 2
 MAX_PAGE_SIZE = 20
@@ -45,6 +45,7 @@ class UserPermission(BasePermission):
     def has_permission(self, request, view):
         return request.parser_context['kwargs'].get('pk') == request.user.id
 
+
 class LoginModel(GenericAPIView):
     serializer_class = LoginSerializer
 
@@ -58,7 +59,6 @@ class LoginModel(GenericAPIView):
             if user is not None:
                 login(request, user)
                 return redirect(reverse('api_users_control:user_current'))
-                # return Response({'description': 'Successful Response'}, status=200)
             else:
                 raise NotFound('Логин или пароль не действительны!')
         else:
@@ -89,7 +89,7 @@ class UsersList(ListAPIView):
             serializer = self.get_serializer(page, many=True)
             pagination_page = int(self._paginator.get_page_number(request, self._paginator))
             pagination_size = self._paginator.get_page_size(request)
-            pagination_total = math.ceil(self._paginator.page.paginator.count/pagination_size)
+            pagination_total = math.ceil(self._paginator.page.paginator.count / pagination_size)
             return Response({'data': serializer.data,
                              'meta': {
                                  'pagination': {
@@ -193,16 +193,25 @@ class PrivateUserEdit(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, G
         return super().destroy(request, *args, **kwargs)
 
 
-class PrivateCity(ListModelMixin, CreateModelMixin, DestroyModelMixin, UpdateModelMixin, GenericAPIView):
+class PrivateCitiesListCreate(ListModelMixin, CreateModelMixin, GenericAPIView):
     permission_classes = [IsAuthenticated, PrivateUserPermission]
-    queryset = UserModel.objects.all().select_related('city')
-    serializer_class = PrivateUsersRUDSerializer
+    queryset = CityModel.objects.all()
+    serializer_class = CitySerializer
 
     def get(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
+
+
+class PrivateCityUpdateDelete(RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin, GenericAPIView):
+    permission_classes = [IsAuthenticated, PrivateUserPermission]
+    queryset = CityModel.objects.all()
+    serializer_class = CitySerializer
+
+    def get(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
         return super().partial_update(request, *args, **kwargs)

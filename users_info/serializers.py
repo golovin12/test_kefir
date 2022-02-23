@@ -6,7 +6,7 @@ from .models import UserModel, CityModel
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = CityModel
-        fields = ['id', 'city']
+        fields = ['id', 'name']
         read_only_fields = ['id']
 
 
@@ -40,7 +40,6 @@ class PrivateUsersListSerializer(serializers.ModelSerializer):
         extra_kwargs = {'is_admin': {'write_only': True}, 'other_name': {'write_only': True},
                         'phone': {'write_only': True}, 'birthday': {'write_only': True},
                         'additional_info': {'write_only': True}, }
-
 
     def create(self, validated_data):
         user_password = validated_data.pop('password')

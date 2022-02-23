@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 
-from .views import UsersList, UserCurrent, UserUpdate, PrivateUsersListCreate, PrivateUserEdit, LogoutModel, LoginModel
+from .views import (UsersList, UserCurrent, UserUpdate, PrivateUsersListCreate, PrivateUserEdit, LogoutModel,
+                    LoginModel, PrivateCitiesListCreate, PrivateCityUpdateDelete)
 
 app_name = 'api_users_control'
 
@@ -12,4 +13,6 @@ urlpatterns = [
     path('users/<int:pk>/', UserUpdate.as_view(), name='user_update'),
     path('private/users/', PrivateUsersListCreate.as_view(), name='private_users_list_create'),
     path('private/users/<int:pk>/', PrivateUserEdit.as_view(), name='private_user_edit'),
+    path('private/cities/', PrivateCitiesListCreate.as_view(), name='private_cities_list_create'),
+    path('private/cities/<int:pk>/', PrivateCityUpdateDelete.as_view(), name='private_cities_update_destroy'),
 ]
