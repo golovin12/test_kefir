@@ -21,6 +21,7 @@ INSTALLED_APPS = [
 
     'users_info',
     'debug_toolbar',
+    'drf_yasg',
 
     'rest_framework',
     'django_filters',

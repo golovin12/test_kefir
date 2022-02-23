@@ -58,7 +58,7 @@ class LoginModel(GenericAPIView):
                                 password=data['password'])
             if user is not None:
                 login(request, user)
-                return redirect(reverse('api_users_control:user_current'))
+                return Response({'description': 'Successful Response'}, status=200)
             else:
                 raise NotFound('Логин или пароль не действительны!')
         else:

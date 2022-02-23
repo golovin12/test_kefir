@@ -19,14 +19,14 @@ class UserCurrentSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ['id', 'login', 'first_name', 'last_name', 'other_name', 'email', 'phone', 'birthday', 'is_admin']
-        read_only_fields = ['id', 'is_admin']
+        read_only_fields = ['id', 'is_admin', 'login']
 
 
 class UsersListSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ['id', 'login', 'first_name', 'last_name', 'email']
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'login']
 
 
 class PrivateUsersListSerializer(serializers.ModelSerializer):
