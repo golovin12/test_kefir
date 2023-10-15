@@ -1,8 +1,6 @@
 import math
 
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect
-from django.urls import reverse
 from rest_framework.exceptions import NotFound
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, get_object_or_404, ListAPIView
@@ -11,6 +9,7 @@ from rest_framework.mixins import ListModelMixin, UpdateModelMixin, CreateModelM
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import UserModel, CityModel
 from .serializers import LoginSerializer, UserCurrentSerializer, UsersListSerializer, PrivateUsersListSerializer, \
@@ -65,7 +64,7 @@ class LoginModel(GenericAPIView):
             return Response(serializer.errors, status=400)
 
 
-class LogoutModel(GenericAPIView):
+class LogoutModel(APIView):
     def get(self, request):
         logout(request)
         return Response({'description': 'Successful Response'}, status=200)
